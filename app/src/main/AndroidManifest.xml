@@ -22,8 +22,11 @@
         </activity>
 
         <service android:name=".MainService">
-            <action android:name="com.example.silence.myclock.intent.X_START" />
-            <action android:name="com.example.silence.myclock.intent.X_STOP" />
+            <intent-filter>
+                <action android:name="com.example.silence.myclock.intent.X_CONTROL" />
+                <category android:name="com.example.silence.myclock.intent.X_STOP" />
+                <category android:name="com.example.silence.myclock.intent.X_START" />
+            </intent-filter>
         </service>
 
         <receiver android:name=".MainReceiver">
@@ -31,6 +34,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:authorities="com.example.silence.myclock.MainProvider"
+            android:name=".MainProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>
