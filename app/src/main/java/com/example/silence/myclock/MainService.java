@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.silence.myclock.entity.WindowLabel;
 import com.example.silence.myclock.intent.XIntents;
+import com.example.silence.myclock.util.Logger;
 import com.example.silence.myclock.util.Util;
 
 import java.util.HashMap;
@@ -30,14 +31,15 @@ public class MainService extends Service {
     IBinder mBinder;
     WindowManager mWindowManager;
 
-    Handler mHandler ;
+    Handler mHandler;
     ExecutorService mExecutor;
     Map<String, WindowLabel> labels;
 
     @Override
     public void onCreate() {
-        Log.d("--->", "Service 创建.");
-        mWindowManager =  (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        Logger.finest("Service %s", "创建");
+
+        mWindowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         mHandler = new Handler();
         mExecutor = Executors.newSingleThreadExecutor();
         labels = new HashMap<>();
@@ -45,12 +47,15 @@ public class MainService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("--->", "Service 命令.");
-//        ContentPr
+        Logger.finest("Service %s", "命令");
+
         Set<String> cates = null;
         if (intent != null) cates = intent.getCategories();
-        if (cates != null && cates.contains(XIntents.X_STOP)) {
+        if (cates != null) {
+            if (cates.contains(XIntents.X_STOP)) {
                 stopSelf();
+                return  START_NOT_STICKY;
+            }
         } else {
             run();
         }
@@ -70,8 +75,9 @@ public class MainService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d("--->", "Service 终止.");
-        for (Map.Entry<String, WindowLabel> entry: labels.entrySet()) {
+        Logger.finest("Service %s", "终止");
+
+        for (Map.Entry<String, WindowLabel> entry : labels.entrySet()) {
             mWindowManager.removeView(entry.getValue().getContainerView());
         }
     }

@@ -1,5 +1,7 @@
 package com.example.silence.myclock;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -7,6 +9,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(stringFromJNI());
     }
 
+    public void onCreate(View v) {
+        ContentResolver resolver = MainActivity.this.getContentResolver();
+        ContentValues value = new ContentValues();
+        resolver.insert(MainProvider.NOTIFY_URI, value);
+
+    }
+
     public void onStart(View v) {
         Intent intent = new Intent();
         intent.setAction(XIntents.X_CONTROL);
@@ -48,12 +58,13 @@ public class MainActivity extends AppCompatActivity {
         intent.setPackage(getPackageName());
         MainActivity.this.startService(intent);
     }
-    public void onStop (View v) {
+
+    public void onStop(View v) {
         Intent intent = new Intent();
         intent.setAction(XIntents.X_CONTROL);
         intent.addCategory(XIntents.X_STOP);
         intent.setPackage(getPackageName());
-        MainActivity.this. startService(intent);
+        MainActivity.this.startService(intent);
     }
 
 

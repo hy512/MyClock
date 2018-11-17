@@ -16,6 +16,11 @@
         app:layout_constraintBottom_toBottomOf="@+id/sample_text"
         android:orientation="horizontal">
         <Button
+            android:text="创建"
+            android:onClick="onCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
             android:text="启动"
             android:onClick="onStart"
             android:layout_width="wrap_content"
