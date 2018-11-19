@@ -23,21 +23,20 @@ public class WindowLabel implements Serializable {
 
     // 更新
     BiConsumer<WindowManager, WindowManager.LayoutParams> update;
-
+    public WindowLabel(){}
+    public WindowLabel(View containerView) {
+        this.containerView = containerView;
+    }
     public WindowLabel(View containerView, Consumer<WindowManager> create) {
         this.containerView = containerView;
         this.create = create;
-//        this.requireUpdate = false;
     }
 
-    public void setUpdate(long updateDelay, BiConsumer<WindowManager, WindowManager.LayoutParams> update) {
-        this.updateDelay = updateDelay;
-        this.update = update;
-    }
 
     public View getContainerView() {
         return containerView;
     }
+
 
     public void create(WindowManager manager) {
         create.accept(manager);
@@ -45,6 +44,18 @@ public class WindowLabel implements Serializable {
 
     public void update(WindowManager manager, WindowManager.LayoutParams layout) {
         update.accept(manager, layout);
+    }
+
+    public void setContainerView(View containerView) {
+        this.containerView = containerView;
+    }
+
+    public void setCreate(Consumer<WindowManager> create) {
+        this.create = create;
+    }
+    public void setUpdate(long updateDelay, BiConsumer<WindowManager, WindowManager.LayoutParams> update) {
+        this.updateDelay = updateDelay;
+        this.update = update;
     }
 
     public void setLayoutParams(WindowManager.LayoutParams layout) {
@@ -55,11 +66,17 @@ public class WindowLabel implements Serializable {
         return layout;
     }
 
-    public static interface Consumer<T> {
+    public long getUpdateDelay() {
+        return updateDelay;
+    }
+
+    public static interface Consumer<T> extends Serializable{
+         static final long serialVersionUID = WindowLabel.serialVersionUID;
         public void accept(T t);
     }
 
-    public static interface BiConsumer<T, R> {
+    public static interface BiConsumer<T, R> extends Serializable{
+        static final long serialVersionUID = WindowLabel.serialVersionUID;
         public void accept(T t, R r);
     }
 }

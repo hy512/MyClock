@@ -27,6 +27,9 @@
                 <action android:name="com.example.silence.myclock.intent.X_CONTROL" />
                 <category android:name="com.example.silence.myclock.intent.X_STOP" />
                 <category android:name="com.example.silence.myclock.intent.X_START" />
+                <category android:name="com.example.silence.myclock.intent.X_ADD" />
+                <category android:name="com.example.silence.myclock.intent.X_DELETE" />
+                <category android:name="com.example.silence.myclock.intent.X_RELOAD" />
             </intent-filter>
         </service>
 

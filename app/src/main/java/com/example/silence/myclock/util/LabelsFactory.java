@@ -17,7 +17,8 @@ public class LabelsFactory {
     Context context;
     double statusBarHeight;
 
-    private LabelsFactory() {
+    private LabelsFactory(Context context) {
+        this.context = context;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
             statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
@@ -28,8 +29,10 @@ public class LabelsFactory {
 
     public static LabelsFactory init(Context context) {
         if (factory == null)
-            factory = new LabelsFactory();
-        factory.context = context;
+            factory = new LabelsFactory(context);
+        else {
+            factory.context = context;
+        }
         return factory;
     }
 
@@ -42,13 +45,16 @@ public class LabelsFactory {
         layout.width = WindowManager.LayoutParams.WRAP_CONTENT;
         layout.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-        View view = LayoutInflater.from(context).inflate(R.layout.window, null);
-
-        WindowLabel label = new WindowLabel(view, (WindowManager manager) -> {
+        WindowLabel label = new WindowLabel();
+        label.setLayoutParams(layout);
+        label.setCreate((WindowManager manager) -> {
+            View view = LayoutInflater.from(context).inflate(R.layout.window, null);
             TextView text = view.findViewById(R.id.text);
             text.setText(new Util().timeStr());
+            touchable(label, manager);
         });
         label.setUpdate(1000, (WindowManager window, WindowManager.LayoutParams playout) -> {
+            View view = label.getContainerView();
             TextView text = view.findViewById(R.id.text);
             text.setText(new Util().timeStr());
         });

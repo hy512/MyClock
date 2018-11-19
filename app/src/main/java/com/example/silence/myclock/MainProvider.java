@@ -34,7 +34,7 @@ public class MainProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
 
-        Logger.finest("查询值.");
+        Logger.finest("provider query");
         return null;
     }
 
@@ -47,23 +47,24 @@ public class MainProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        Logger.finest("插入请求.");
+        Logger.finest("provider insert");
 
         if (uriMatcher.match(uri) == MATCH_ALL_CODE) {
-            Logger.finest("插入值.");
+            Logger.finest("provider insert.");
+            getContext().getContentResolver().notifyChange(MainProvider.NOTIFY_URI, null);
         }
-        return null;
+        return uri;
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        Logger.finest("删除值.");
+        Logger.finest("provider delete.");
         return 0;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        Logger.finest("更新值.");
+        Logger.finest("provider update.");
         return 0;
     }
 }
